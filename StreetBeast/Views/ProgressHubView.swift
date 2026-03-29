@@ -288,10 +288,16 @@ private struct LineGraph: View {
     }
 
     private func normalizedPoints(in size: CGSize) -> [CGPoint] {
-        guard values.count > 1 else { return [] }
+        guard !values.isEmpty else { return [] }
         let minValue = values.min() ?? 0
         let maxValue = values.max() ?? 1
         let range = max(maxValue - minValue, 1)
+
+        if values.count == 1 {
+            let yRatio = CGFloat((values[0] - minValue) / range)
+            let y = size.height - (yRatio * size.height)
+            return [CGPoint(x: size.width / 2, y: y)]
+        }
 
         return values.enumerated().map { index, value in
             let x = size.width * CGFloat(index) / CGFloat(max(values.count - 1, 1))
