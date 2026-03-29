@@ -255,7 +255,7 @@ private extension TimerView {
     var planSummary: String {
         let stepCount = String(format: localization.localized("training_plan_steps_format"), viewModel.selectedPlan.totalStepInstances)
         let totalTime = viewModel.formattedTime(viewModel.selectedPlan.totalDurationSeconds)
-        return "\(stepCount) • \(totalTime)"
+        return "\(stepCount) • \(totalTime) • \(planFocus)"
     }
 
     func isCurrentStep(_ index: Int) -> Bool {
@@ -279,6 +279,26 @@ private extension TimerView {
             return exercise
         }
         return Exercise.library.first(where: { $0.name == step.exerciseName })
+    }
+
+    var planFocus: String {
+        let exerciseCategories = viewModel.selectedPlan.steps.compactMap { step -> ExerciseCategory? in
+            guard step.kind == .exercise else { return nil }
+            return exerciseForStep(step)?.category
+        }
+
+        guard !exerciseCategories.isEmpty else {
+            return localization.localized("training_plan_focus_mixed")
+        }
+
+        let counts = Dictionary(grouping: exerciseCategories, by: { $0 }).mapValues(\.count)
+        let sorted = counts.sorted { $0.value > $1.value }
+
+        if sorted.count > 1, sorted[0].value == sorted[1].value {
+            return localization.localized("training_plan_focus_mixed")
+        }
+
+        return localization.localized(sorted[0].key.titleKey)
     }
 
     @ViewBuilder
