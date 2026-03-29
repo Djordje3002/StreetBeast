@@ -705,6 +705,8 @@ private extension TimerSessionView {
                             .stroke(design.accentColor, lineWidth: 1)
                     )
             }
+            .disabled(!viewModel.hasStarted)
+            .opacity(viewModel.hasStarted ? 1 : 0.5)
 
             PrimaryActionButton(
                 title: actionTitle,
