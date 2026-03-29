@@ -105,6 +105,8 @@ private struct ExerciseRow: View {
                 Text(exercise.name)
                     .font(.system(size: 16, weight: .bold, design: .rounded))
                     .foregroundColor(design.textColor)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Text(metadataText)
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
