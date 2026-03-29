@@ -874,8 +874,11 @@ private struct TrainingStepEditorView: View {
         self.onSave = onSave
 
         let fallbackExerciseId = Exercise.library.first?.id ?? ""
+        let initialExerciseId = step?.exerciseId
+            ?? Exercise.library.first(where: { $0.name == step?.exerciseName })?.id
+            ?? fallbackExerciseId
         _kind = State(initialValue: step?.kind ?? .exercise)
-        _selectedExerciseId = State(initialValue: step?.exerciseId ?? fallbackExerciseId)
+        _selectedExerciseId = State(initialValue: initialExerciseId)
         _durationSeconds = State(initialValue: max(step?.durationSeconds ?? 60, 5))
         _repeatCount = State(initialValue: max(step?.repeatCount ?? 1, 1))
     }
