@@ -169,6 +169,9 @@ class TimerViewModel: ObservableObject {
         if sessionStartedAt == nil {
             sessionStartedAt = Date()
         }
+        if remainingSeconds > 0 {
+            playPhaseSoundIfNeeded()
+        }
         startTimer()
     }
 
