@@ -42,7 +42,7 @@ struct NavigationSurfaceCard<Leading: View, Content: View>: View {
                     .foregroundColor(chevronColor ?? design.secondaryTextColor)
             }
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, horizontalPadding)
         .padding(.vertical, verticalPadding)
     }
 }
