@@ -453,6 +453,8 @@
 "exercises_detail_title" = "Vežba";
 "exercise_view_more" = "Prikaži";
 "exercise_search_placeholder" = "Pretraži vežbe";
+"exercise_search_empty_title" = "Nema pronađenih vežbi";
+"exercise_search_empty_subtitle" = "Probaj drugo ime, kategoriju ili težinu.";
 "exercise_category_label" = "Kategorija";
 "exercise_difficulty_label" = "Težina";
 "exercise_equipment_label" = "Oprema";

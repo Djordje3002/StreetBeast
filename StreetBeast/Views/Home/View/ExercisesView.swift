@@ -17,13 +17,17 @@ struct ExercisesView: View {
                     VStack(spacing: DesignSystem.Spacing.lg) {
                         headerCopy
 
-                        ForEach(filteredExercises) { exercise in
-                            NavigationLink {
-                                ExerciseDetailView(exercise: exercise)
-                            } label: {
-                                ExerciseRow(exercise: exercise)
+                        if filteredExercises.isEmpty {
+                            emptyState
+                        } else {
+                            ForEach(filteredExercises) { exercise in
+                                NavigationLink {
+                                    ExerciseDetailView(exercise: exercise)
+                                } label: {
+                                    ExerciseRow(exercise: exercise)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                     .padding(.horizontal, DesignSystem.Spacing.lg)
@@ -64,6 +68,26 @@ struct ExercisesView: View {
             || localization.localized(exercise.category.titleKey).localizedCaseInsensitiveContains(query)
             || localization.localized(exercise.difficulty.titleKey).localizedCaseInsensitiveContains(query)
         }
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: DesignSystem.Spacing.sm) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 28, weight: .bold))
+                .foregroundColor(design.accentColor)
+
+            Text(localization.localized("exercise_search_empty_title"))
+                .font(.system(size: 15, weight: .bold, design: .rounded))
+                .foregroundColor(design.textColor)
+
+            Text(localization.localized("exercise_search_empty_subtitle"))
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(design.secondaryTextColor)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DesignSystem.Spacing.xl)
+        .streetBeastSurface()
     }
 }
 
