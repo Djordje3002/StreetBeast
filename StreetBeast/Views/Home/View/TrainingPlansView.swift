@@ -495,6 +495,7 @@ struct TrainingPlansView: View {
             steps: plan.steps
         )
         planStore.save(plan: copy)
+        onSelect(copy)
     }
 }
 
