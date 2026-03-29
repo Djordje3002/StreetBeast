@@ -250,15 +250,6 @@ private struct LineGraph: View {
                         for point in points.dropFirst() {
                             path.addLine(to: point)
                         }
-                    }
-                    .stroke(accent, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-                    .shadow(color: accent.opacity(0.2), radius: 6, x: 0, y: 4)
-
-                    Path { path in
-                        path.move(to: points[0])
-                        for point in points.dropFirst() {
-                            path.addLine(to: point)
-                        }
                         path.addLine(to: CGPoint(x: points.last?.x ?? 0, y: geo.size.height))
                         path.addLine(to: CGPoint(x: points.first?.x ?? 0, y: geo.size.height))
                         path.closeSubpath()
@@ -270,6 +261,15 @@ private struct LineGraph: View {
                             endPoint: .bottom
                         )
                     )
+
+                    Path { path in
+                        path.move(to: points[0])
+                        for point in points.dropFirst() {
+                            path.addLine(to: point)
+                        }
+                    }
+                    .stroke(accent, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                    .shadow(color: accent.opacity(0.2), radius: 6, x: 0, y: 4)
                 }
 
                 ForEach(Array(points.enumerated()), id: \.offset) { _, point in
