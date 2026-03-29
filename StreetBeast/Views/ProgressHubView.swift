@@ -232,7 +232,6 @@ private extension ProgressHubView {
 
     var trainingOptions: [TrainingOption] {
         [
-            TrainingOption(id: "beginner", titleKey: "home_workout_beginner", icon: "leaf.fill"),
             TrainingOption(id: "strength", titleKey: "home_workout_strength", icon: "bolt.fill"),
             TrainingOption(id: "endurance", titleKey: "home_workout_endurance", icon: "flame.fill"),
             TrainingOption(id: "custom", titleKey: "home_workout_custom", icon: "slider.horizontal.3")
