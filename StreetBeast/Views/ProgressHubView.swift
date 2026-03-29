@@ -36,9 +36,10 @@ struct ProgressHubView: View {
         )
         .dynamicTypeSize(.medium ... .accessibility3)
         .task {
-            if let uid = authManager.currentUser?.id {
-                await workoutStore.refreshFromRemote(uid: uid)
-            }
+            await refreshRemoteData()
+        }
+        .refreshable {
+            await refreshRemoteData()
         }
     }
 }
@@ -215,6 +216,12 @@ private extension ProgressHubView {
 
     var levelInfo: XPLeveling.LevelInfo {
         workoutStore.levelInfo
+    }
+
+    func refreshRemoteData() async {
+        if let uid = authManager.currentUser?.id {
+            await workoutStore.refreshFromRemote(uid: uid)
+        }
     }
 
     struct TrainingOption: Identifiable {
