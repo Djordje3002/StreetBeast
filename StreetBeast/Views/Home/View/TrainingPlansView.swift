@@ -1158,9 +1158,15 @@ private struct TrainingPlanPreviewSheet: View {
                                 .font(.system(size: 22, weight: .bold, design: .rounded))
                                 .foregroundColor(design.textColor)
 
-                            Text(String(format: localization.localized("training_plan_steps_format"), plan.totalStepInstances))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(design.secondaryTextColor)
+                            HStack(spacing: 8) {
+                                Text(String(format: localization.localized("training_plan_steps_format"), plan.totalStepInstances))
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(design.secondaryTextColor)
+
+                                Text(planFocus(for: plan))
+                                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                                    .foregroundColor(design.accentColor)
+                            }
                         }
 
                         VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
@@ -1295,6 +1301,26 @@ private struct TrainingPlanPreviewSheet: View {
         let minutes = seconds / 60
         let remainder = seconds % 60
         return String(format: "%02d:%02d", minutes, remainder)
+    }
+
+    private func planFocus(for plan: TrainingPlan) -> String {
+        let exerciseCategories = plan.steps.compactMap { step -> ExerciseCategory? in
+            guard step.kind == .exercise else { return nil }
+            return exerciseForStep(step)?.category
+        }
+
+        guard !exerciseCategories.isEmpty else {
+            return localization.localized("training_plan_focus_mixed")
+        }
+
+        let counts = Dictionary(grouping: exerciseCategories, by: { $0 }).mapValues(\.count)
+        let sorted = counts.sorted { $0.value > $1.value }
+
+        if sorted.count > 1, sorted[0].value == sorted[1].value {
+            return localization.localized("training_plan_focus_mixed")
+        }
+
+        return localization.localized(sorted[0].key.titleKey)
     }
 }
 
