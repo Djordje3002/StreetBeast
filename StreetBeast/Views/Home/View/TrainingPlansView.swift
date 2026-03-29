@@ -594,6 +594,11 @@ private struct TrainingPlanBuilderView: View {
                         .foregroundColor(design.textColor)
                 }
             }
+
+            HStack(spacing: DesignSystem.Spacing.sm) {
+                durationChip(text: String(format: localization.localized("training_plan_steps_format"), totalStepInstances))
+                durationChip(text: shortDuration(totalDurationSeconds))
+            }
         }
         .padding(DesignSystem.Spacing.lg)
         .streetBeastSurface()
@@ -828,6 +833,12 @@ private struct TrainingPlanBuilderView: View {
 
     private var totalStepInstances: Int {
         steps.reduce(0) { $0 + max($1.repeatCount, 1) }
+    }
+
+    private var totalDurationSeconds: Int {
+        max(prepareSeconds, 0) + steps.reduce(0) { total, step in
+            total + (max(step.durationSeconds, 0) * max(step.repeatCount, 1))
+        }
     }
 
     private var restSummaryText: String? {
