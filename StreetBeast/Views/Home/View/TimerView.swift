@@ -93,7 +93,7 @@ private extension TimerView {
         guard viewModel.currentPhase != .prepare && viewModel.currentPhase != .complete else { return nil }
         guard let step = viewModel.currentStep else { return nil }
         if step.kind == .rest {
-            return nextExerciseName ?? localization.localized("timer_phase_rest")
+            return localization.localized("timer_phase_rest")
         }
         return step.exerciseName
     }
@@ -459,7 +459,7 @@ private extension TimerSessionView {
         guard viewModel.currentPhase != .prepare && viewModel.currentPhase != .complete else { return nil }
         guard let step = viewModel.currentStep else { return nil }
         if step.kind == .rest {
-            return localization.localized("timer_phase_rest")
+            return nextExerciseName ?? localization.localized("timer_phase_rest")
         }
         return step.exerciseName
     }
