@@ -452,6 +452,7 @@
 "exercises_subtitle" = "View the full exercise library.";
 "exercises_detail_title" = "Exercise";
 "exercise_view_more" = "View more";
+"exercise_search_placeholder" = "Search exercises";
 "exercise_category_label" = "Category";
 "exercise_difficulty_label" = "Difficulty";
 "exercise_equipment_label" = "Equipment";

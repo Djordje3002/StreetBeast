@@ -5,6 +5,7 @@ struct ExercisesView: View {
     @ObservedObject private var design = DesignSystem.shared
     @ObservedObject private var localization = LocalizationManager.shared
 
+    @State private var searchText = ""
     private let exercises = Exercise.library
 
     var body: some View {
@@ -16,7 +17,7 @@ struct ExercisesView: View {
                     VStack(spacing: DesignSystem.Spacing.lg) {
                         headerCopy
 
-                        ForEach(exercises) { exercise in
+                        ForEach(filteredExercises) { exercise in
                             NavigationLink {
                                 ExerciseDetailView(exercise: exercise)
                             } label: {
@@ -32,6 +33,11 @@ struct ExercisesView: View {
             }
             .navigationTitle(localization.localized("exercises_title"))
             .navigationBarTitleDisplayMode(.inline)
+            .searchable(
+                text: $searchText,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: localization.localized("exercise_search_placeholder")
+            )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(localization.localized("cancel")) {
@@ -47,6 +53,17 @@ struct ExercisesView: View {
             .font(.system(size: 14, weight: .medium))
             .foregroundColor(design.secondaryTextColor)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var filteredExercises: [Exercise] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return exercises }
+
+        return exercises.filter { exercise in
+            exercise.name.localizedCaseInsensitiveContains(query)
+            || localization.localized(exercise.category.titleKey).localizedCaseInsensitiveContains(query)
+            || localization.localized(exercise.difficulty.titleKey).localizedCaseInsensitiveContains(query)
+        }
     }
 }
 
