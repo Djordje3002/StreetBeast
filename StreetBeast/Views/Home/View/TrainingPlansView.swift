@@ -8,7 +8,7 @@ struct TrainingPlansView: View {
     @ObservedObject private var localization = LocalizationManager.shared
 
     let selectedPlanId: UUID
-    let startCreating: Bool = false
+    let startCreating: Bool
     let onSelect: (TrainingPlan) -> Void
 
     @State private var isBuilderPresented = false

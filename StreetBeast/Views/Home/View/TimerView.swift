@@ -34,7 +34,10 @@ struct TimerView: View {
         )
         .dynamicTypeSize(.medium ... .accessibility3)
         .sheet(isPresented: $isPlanPickerPresented) {
-            TrainingPlansView(selectedPlanId: viewModel.selectedPlan.id) { plan in
+            TrainingPlansView(
+                selectedPlanId: viewModel.selectedPlan.id,
+                startCreating: startCreatingPlan
+            ) { plan in
                 viewModel.applyPlan(plan)
             }
             .onDisappear {
