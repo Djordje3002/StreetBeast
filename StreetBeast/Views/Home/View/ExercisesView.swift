@@ -67,6 +67,9 @@ struct ExercisesView: View {
             exercise.name.localizedCaseInsensitiveContains(query)
             || localization.localized(exercise.category.titleKey).localizedCaseInsensitiveContains(query)
             || localization.localized(exercise.difficulty.titleKey).localizedCaseInsensitiveContains(query)
+            || exercise.equipment.contains(where: {
+                localization.localized($0.titleKey).localizedCaseInsensitiveContains(query)
+            })
         }
     }
 
