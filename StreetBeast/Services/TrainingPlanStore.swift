@@ -41,6 +41,7 @@ final class TrainingPlanStore: ObservableObject {
         } else {
             customPlans.append(normalized)
         }
+        customPlans = sortPlans(customPlans)
         persist()
 
         if let uid = authSession.currentUserId {
@@ -64,13 +65,13 @@ final class TrainingPlanStore: ObservableObject {
     private func load() {
         if let data = userDefaults.data(forKey: scopedKey(storageKeyBase)),
            let decoded = try? JSONDecoder().decode([TrainingPlan].self, from: data) {
-            customPlans = decoded
+            customPlans = sortPlans(decoded)
             return
         }
 
         if let legacyData = userDefaults.data(forKey: legacyStorageKey),
            let decoded = try? JSONDecoder().decode([TrainingPlan].self, from: legacyData) {
-            customPlans = decoded
+            customPlans = sortPlans(decoded)
             persist()
             return
         }
@@ -94,7 +95,7 @@ final class TrainingPlanStore: ObservableObject {
                 TrainingPlan.fromDictionary(doc.data())
             }
             let merged = merge(local: customPlans, remote: remotePlans)
-            customPlans = merged
+            customPlans = sortPlans(merged)
             persist()
         } catch {
             // Keep local data if remote fetch fails.
@@ -110,6 +111,12 @@ final class TrainingPlanStore: ObservableObject {
             map[plan.id] = plan
         }
         return Array(map.values)
+    }
+
+    private func sortPlans(_ plans: [TrainingPlan]) -> [TrainingPlan] {
+        plans.sorted {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+        }
     }
 
     private func syncPlan(_ plan: TrainingPlan, uid: String) async {
